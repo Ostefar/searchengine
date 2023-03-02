@@ -1,5 +1,30 @@
 <body>
-  <label for="search">Enter search frases</label>
-  <input type="text" id="search" name="search"><br><br>
-  <button type="button" (click)="search()">Search Database</button>
+  <div>
+    <label for="search">Enter search frases</label>
+    <input type="text" id="search" name="search"><br><br>
+    <button type="button" (click)="search()">Search Database</button>
+  </div>
+
+  <div>
+    <table *ngIf="hasBeenClicked" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th> document count</th>
+          <th> document path</th>
+          <th>ignored terms</th>
+          <th>number of ignored terms</th>
+          <th>elapsed milliseconds</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr> <!--*ngFor="let result of results;"-->
+          <td><!--{{result.documentsCount}}--></td>
+          <td><!--{{result.documentPath}}--></td>
+          <td><!--{{result.ignoredTerms}}--></td>
+          <td><!--{{result.ignoredTermsCount}}--></td>
+          <td><!--{{result.elapsedMilliseconds}}--></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>

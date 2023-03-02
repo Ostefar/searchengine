@@ -12,8 +12,7 @@ export class Service {
 
   constructor(private http: HttpClient) { }
 
-  search(payload: any)
-  {
+  search(payload: any): Observable<any> {
     return this.http.get(this.APIUrl + payload + "&numberOfResults=10");
   }
 }
