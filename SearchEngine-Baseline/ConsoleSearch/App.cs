@@ -38,7 +38,7 @@ namespace ConsoleSearch
                     Console.WriteLine(resultDocument.Id + ": " + resultDocument.Path + " - number of terms found: " + resultDocument.NumberOfOccurences);
                 }
 
-                Console.WriteLine("Found " + result.Documents.Count + " in " + result.ElapsepMilliseconds + " ms");
+                Console.WriteLine("Found " + result.Documents.Count + " in " + result.ElapsedMilliseconds + " ms");
 
 
             }

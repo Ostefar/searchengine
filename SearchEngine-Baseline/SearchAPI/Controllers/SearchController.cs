@@ -41,7 +41,7 @@ namespace SearchAPI.Controllers
                 top.Add(p.Key);
             }
 
-            result.ElapsepMilliseconds = (DateTime.Now - start).TotalMilliseconds;
+            result.ElapsedMilliseconds = (DateTime.Now - start).TotalMilliseconds;
 
             int idx = 0;
             foreach (var doc in await mSearchLogic.GetDocumentDetails(top))

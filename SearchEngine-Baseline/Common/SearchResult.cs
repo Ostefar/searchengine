@@ -8,7 +8,7 @@ namespace Common
 {
     public class SearchResult
     {
-        public double ElapsepMilliseconds { get; set; }
+        public double ElapsedMilliseconds { get; set; }
         public List<string> IgnoredTerms { get; set; } = new List<string>();
         public List<Document> Documents { get; set; } = new List<Document>();
 

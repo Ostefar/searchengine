@@ -1,9 +1,8 @@
 export interface DataInterface {
-  documentsCount: number;
-  documentPath: string;
-  documents: object;
-  ignoredTerms: string;
-  ignoredTermsCount: number;
+  id: number;
+  path: string;
+  numberOfOccurences: number;
   elapsedMilliseconds: number;
-
+  ignoredTerms: string[];
+  documents: Document[];
 }
