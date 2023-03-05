@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: "SearchApi/Dockerfile"
+    ports:
+      - 9000:80
+    volumes:
+      - "/Users/emil_/data-searchengine:/data"
+  web:
+    build:
+      context: .
+      dockerfile: "WebSearch/Dockerfile"
+    ports:
+      - 9001:80

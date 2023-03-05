@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchAPI", "SearchAPI\SearchAPI.csproj", "{485CD948-5CF7-45D9-8476-222A3ED5BB61}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "WebSearch", "WebSearch\WebSearch.esproj", "{A12C881B-BE7B-42F9-9B09-0E30946D3D69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSearch", "WebSearch\WebSearch.csproj", "{0B146833-CCEE-4A67-AAC8-FE5FDBDC4892}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +35,10 @@ Global
 		{485CD948-5CF7-45D9-8476-222A3ED5BB61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{485CD948-5CF7-45D9-8476-222A3ED5BB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{485CD948-5CF7-45D9-8476-222A3ED5BB61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A12C881B-BE7B-42F9-9B09-0E30946D3D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A12C881B-BE7B-42F9-9B09-0E30946D3D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A12C881B-BE7B-42F9-9B09-0E30946D3D69}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{A12C881B-BE7B-42F9-9B09-0E30946D3D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A12C881B-BE7B-42F9-9B09-0E30946D3D69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A12C881B-BE7B-42F9-9B09-0E30946D3D69}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0B146833-CCEE-4A67-AAC8-FE5FDBDC4892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B146833-CCEE-4A67-AAC8-FE5FDBDC4892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B146833-CCEE-4A67-AAC8-FE5FDBDC4892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B146833-CCEE-4A67-AAC8-FE5FDBDC4892}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
