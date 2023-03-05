@@ -3,8 +3,6 @@
 
 // Write your JavaScript code.
 
-import ko from 'https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js';
-
 let ViewModel = function () {
     let me = this;
 
@@ -14,7 +12,7 @@ let ViewModel = function () {
     me.timeUsed = ko.observable();
 
     me.search = function () {
-        $ajax({
+        $.ajax({
             url: "http://localhost:9000/Search?terms=" + me.searchTerms() + "&numberOfResults=10",
             success: function (data) {
                 me.hits(data.documents.length);

@@ -8,7 +8,7 @@ services:
     ports:
       - 9000:80
     volumes:
-      - "/emil_/data-searchengine:/data"
+      - C:\Users\emil_\data-searchengine:/data:ro
   web:
     build:
       context: .
