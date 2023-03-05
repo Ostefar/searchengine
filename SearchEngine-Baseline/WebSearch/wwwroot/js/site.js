@@ -3,6 +3,7 @@
 
 // Write your JavaScript code.
 
+import ko from 'https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js';
 
 let ViewModel = function () {
     let me = this;
