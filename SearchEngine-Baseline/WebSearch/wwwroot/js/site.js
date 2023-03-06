@@ -13,7 +13,7 @@ let ViewModel = function () {
 
     me.search = function () {
         $.ajax({
-            url: "http://localhost:9000/Search?terms=" + me.searchTerms() + "&numberOfResults=10",
+            url: "http://localhost:8020/Search?terms=" + me.searchTerms() + "&numberOfResults=10",
             success: function (data) {
                 me.hits(data.documents.length);
                 me.timeUsed(data.elapsedMilliseconds);

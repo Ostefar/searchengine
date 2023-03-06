@@ -16,7 +16,7 @@ var app = builder.Build();
     app.UseSwaggerUI();
 }
 
-app.UseCors(config => config.AllowAnyOrigin()); // not working for some reason
+app.UseCors(config => config.AllowAnyOrigin());
 
 app.UseHttpsRedirection();
 

@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  api:
+    image: searchengine-baseline-api:latest
+    deploy:
+      replicas: 3
+    volumes:
+      - C:\Users\emil_\data-searchengine:/data:ro
+
+  web:
+    image: searchengine-baseline-web:latest
+    deploy:
+      replicas: 1
+    ports:
+      - 8080:80
+
+  loadbalancer:
+    image: searchengine-baseline-loadbalancer:latest
+    deploy:
+      replicas: 1
+    ports:
+      - 8020:80
+    depends_on:
+      - api
+      - web

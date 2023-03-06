@@ -9,9 +9,17 @@ services:
       - 9000:80
     volumes:
       - C:\Users\emil_\data-searchengine:/data:ro
+
   web:
     build:
       context: .
       dockerfile: "WebSearch/Dockerfile"
     ports:
       - 9001:80
+
+  loadbalancer:
+    build:
+      context: .
+      dockerfile: "LoadBalancer/Dockerfile"
+    ports:
+      - 9005:80
