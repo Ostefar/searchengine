@@ -16,11 +16,22 @@ namespace LoadBalancer.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             string nextService = loadBalancer.NextService();
-            // Use nextService to make a request to the API instance
-            return Ok(nextService);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                HttpResponseMessage response = await httpClient.GetAsync(nextService);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return Ok(responseBody);
+                }
+                else
+                {
+                    return StatusCode((int)response.StatusCode, response.ReasonPhrase);
+                }
+            }
         }
     }
 }
