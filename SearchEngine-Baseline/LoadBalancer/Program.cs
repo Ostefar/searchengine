@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Net;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +18,9 @@ builder.Services.AddSingleton<ILoadBalancer, RoundRobinLoadBalancer>();
 
 builder.Services.AddControllers();
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new() { Title = "LoadBalancerAPI", Version = "v1" });
-});
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -28,12 +30,12 @@ var app = builder.Build();
     app.UseDeveloperExceptionPage();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "LoadBalancerAPI v1");
-    c.RoutePrefix = string.Empty;
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseCors(config => config.AllowAnyOrigin());
 
@@ -49,6 +51,21 @@ app.Use((Func<HttpContext, Func<Task>, Task>)(async (context, next) =>
 {
     // Get the active load balancer strategy from the container
     var loadBalancer = context.RequestServices.GetRequiredService<ILoadBalancer>();
+    loadBalancer.SetActiveStrategy(app.Services.GetRequiredService<ILoadBalancerStrategy>());
+
+    // Get all the replicas of the API service from the Docker Swarm DNS service
+    var apiServiceName = "api";
+    var apiService = await Dns.GetHostEntryAsync(apiServiceName);
+    var apiServices = apiService.AddressList
+        .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
+        .Select(a => $"http://{a}:{context.Connection.LocalPort}") // {a}=localhost context.Connection.LocalPort=8040
+        .ToList(); 
+
+    // Use the list of API services in the load balancer
+    foreach (var url in apiServices)
+    {
+        loadBalancer.AddService(url);
+    }
 
     // Get the next service in the load balancer using the active strategy
     var targetService = loadBalancer.NextService();
@@ -77,9 +94,13 @@ app.Use((Func<HttpContext, Func<Task>, Task>)(async (context, next) =>
 
     // Set the original response's status code to match the target response's status code
     context.Response.StatusCode = (int)responseMessage.StatusCode;
+    Console.WriteLine(context.Response.StatusCode = (int)responseMessage.StatusCode);
 
     // Copy the target response's content to the original response
+    var responseContent = await responseMessage.Content.ReadAsStringAsync();
     await responseMessage.Content.CopyToAsync(context.Response.Body);
+    Console.WriteLine(responseContent);
 }));
+
 
 app.Run();

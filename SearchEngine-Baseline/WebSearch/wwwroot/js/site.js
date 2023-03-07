@@ -15,6 +15,7 @@ let ViewModel = function () {
         $.ajax({
             url: "http://localhost:8020/Search?terms=" + me.searchTerms() + "&numberOfResults=10",
             success: function (data) {
+                console.log(data)
                 me.hits(data.documents.length);
                 me.timeUsed(data.elapsedMilliseconds);
                 me.results.removeAll();
@@ -25,5 +26,9 @@ let ViewModel = function () {
 
         });
     }
+    console.log(me.searchTerms)
+    console.log(me.hits)
+    console.log(me.results)
+    console.log(me.timeUsed)
 };
 ko.applyBindings(new ViewModel());

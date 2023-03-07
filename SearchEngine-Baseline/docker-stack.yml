@@ -1,5 +1,9 @@
 version: "3.9"
 
+networks:
+  searchengine_network:
+    driver: overlay
+
 services:
   api:
     image: searchengine-baseline-api:latest
@@ -7,6 +11,10 @@ services:
       replicas: 3
     volumes:
       - C:\Users\emil_\data-searchengine:/data:ro
+    ports:
+      - 8040:80
+    networks:
+      - searchengine_network
 
   web:
     image: searchengine-baseline-web:latest
@@ -14,6 +22,8 @@ services:
       replicas: 1
     ports:
       - 8080:80
+    networks:
+      - searchengine_network
 
   loadbalancer:
     image: searchengine-baseline-loadbalancer:latest
@@ -21,6 +31,8 @@ services:
       replicas: 1
     ports:
       - 8020:80
+    networks:
+      - searchengine_network
     depends_on:
       - api
       - web

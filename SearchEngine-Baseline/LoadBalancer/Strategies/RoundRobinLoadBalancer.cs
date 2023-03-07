@@ -5,56 +5,49 @@ namespace LoadBalancer.Strategies
     public class RoundRobinLoadBalancer : ILoadBalancer
     {
 
-        private readonly List<string> _services = new List<string>();
-        private int _currentIndex = 0;
-        private readonly object _lock;
+        private List<string> services = new List<string>();
+        private ILoadBalancerStrategy activeStrategy;
 
         public List<string> GetAllServices()
         {
-            return _services;
+            return services;
         }
 
         public int AddService(string url)
         {
-            _services.Add(url);
-            return _services.Count - 1;
+            services.Add(url);
+            return services.Count - 1;
         }
 
         public int RemoveService(int id)
         {
-            if (id >= 0 && id < _services.Count)
-            {
-                _services.RemoveAt(id);
-                return id;
-            }
-
-            return -1;
+            services.RemoveAt(id);
+            return services.Count;
         }
 
         public ILoadBalancerStrategy GetActiveStrategy()
         {
-            return new RoundRobinStrategy();
+            return activeStrategy;
         }
 
         public void SetActiveStrategy(ILoadBalancerStrategy strategy)
         {
-            // Does nothing for now
+            activeStrategy = strategy;
         }
 
         public string NextService()
         {
-            if (_services.Count == 0)
-                throw new Exception("No services available.");
-
-            lock (_lock)
+            if (services.Count == 0)
             {
-                _currentIndex++;
-                if (_currentIndex >= _services.Count)
-                    _currentIndex = 0;
-
-                var nextService = _services[_currentIndex % _services.Count];
-                return nextService;
+                throw new InvalidOperationException("No services available.");
             }
+
+            if (activeStrategy == null)
+            {
+                throw new InvalidOperationException("No load balancing strategy set.");
+            }
+
+            return activeStrategy.NextService(services);
         }
     }
 }

@@ -8,13 +8,13 @@ namespace LoadBalancer.Strategies
 
         public string NextService(List<string> services)
         {
-            var nextService = services[_currentIndex];
-
-            _currentIndex++;
-            if (_currentIndex == services.Count)
+            if (services.Count == 0)
             {
-                _currentIndex = 0;
+                throw new InvalidOperationException("No services available");
             }
+
+            var nextService = services[_currentIndex];
+            _currentIndex = (_currentIndex + 1) % services.Count;
 
             return nextService;
         }

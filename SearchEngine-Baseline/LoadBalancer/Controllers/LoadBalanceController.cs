@@ -1,6 +1,10 @@
-﻿using LoadBalancer.Interfaces;
+﻿using Common;
+using LoadBalancer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 
 namespace LoadBalancer.Controllers
 {
@@ -14,24 +18,42 @@ namespace LoadBalancer.Controllers
         {
             this.loadBalancer = loadBalancer;
         }
-
+        
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<SearchResult> Search(string terms, int numberOfResults)
         {
-            string nextService = loadBalancer.NextService();
-            using (HttpClient httpClient = new HttpClient())
+            var serviceUrl = loadBalancer.NextService();
+            var requestUrl = $"{serviceUrl}/Search?terms={terms}&numberOfResults={numberOfResults}";
+
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(requestUrl);
+
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+
+            // Deserialize API response
+            var apiResponse = JsonConvert.DeserializeObject<SearchResult>(content);
+
+            // Map API response to domain model
+            var documents = apiResponse.Documents.Select((d, i) => new Document
             {
-                HttpResponseMessage response = await httpClient.GetAsync(nextService);
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    return Ok(responseBody);
-                }
-                else
-                {
-                    return StatusCode((int)response.StatusCode, response.ReasonPhrase);
-                }
-            }
+                Id = i + 1,
+                Path = d.Path,
+                NumberOfOccurences = d.NumberOfOccurences
+            }).ToList();
+
+            // Create new instance of SearchResult
+            var result = new SearchResult
+            {
+                ElapsedMilliseconds = apiResponse.ElapsedMilliseconds,
+                IgnoredTerms = apiResponse.IgnoredTerms,
+                Documents = documents
+            };
+
+            Console.Write(result.ToString() + "SeekOrigin meee");
+
+            return apiResponse;
         }
     }
+    
 }
